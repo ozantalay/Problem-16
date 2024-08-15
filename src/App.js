@@ -18,7 +18,10 @@ const faqs = [
 
 // `isOpen` state değişkenini ana bileşene ( FAQ) kaldırarak ve verileri props aracılığıyla aşağı aktararak state paylaşın
 export default function FAQ() {
-  const [isOpen, setOpen] = useState(false)
+  const [isOpen, setOpen] = useState(null)
+  const toggleOpen=(id)=>{
+    setOpen(isOpen===id?null:id)
+  }
 
   return (
     <div className='bg-white'>
@@ -29,7 +32,7 @@ export default function FAQ() {
           </h2>
           <dl className='mt-10 space-y-6 divide-y divide-gray-900/10'>
             {faqs.map((faq) => (
-              <Accordion key={faq.id} faq={faq} />
+              <Accordion key={faq.id} faq={faq} isOpen={isOpen===faq.id} toggleOpen={() => toggleOpen(faq.id)}/>
             ))}
           </dl>
         </div>
@@ -38,12 +41,17 @@ export default function FAQ() {
   )
 }
 
-function Accordion({ faq }) {
+function Accordion({ faq,isOpen,toggleOpen}) {
+
+
+  
   return (
     <div className='pt-6'>
       <dt>
         <button
-          onClick={() => setOpen((isOpen) => !isOpen)}
+          onClick={toggleOpen}
+           
+      
           className='flex w-full items-start justify-between text-left text-gray-900'
         >
           <span className='text-base font-semibold leading-7'>
